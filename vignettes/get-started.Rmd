@@ -54,6 +54,34 @@ max_auc(k = 0.13, pve = 0.26)
   
   
 
+# Estimate optimal sensitivity
+
+This function estimates the optimal (maximal or minimal) sensitivity of a PRS
+
+
+```{r example-opt_se}
+opt_se(k = 0.13, pve = 0.26, sp = 0.99)
+```
+
+  
+
+  
+
+# Estimate optimal specificity
+
+    
+
+  
+
+```{r example-opt_sp}
+opt_sp(k = 0.13, pve = 0.26, se = 0.99)
+```
+
+  
+
+  
+
+
 <!-- 
 
 # Inflate your package
