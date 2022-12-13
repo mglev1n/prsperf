@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 # prsperf
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/mglev1n/prsperf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mglev1n/prsperf/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/mglev1n/prsperf/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/mglev1n/prsperf/actions/workflows/test-coverage.yaml)
 <!-- badges: end -->
 
 The goal of prsperf is to provide a set of functions to estimate performance characteristics of polygenic risk scores under specified conditions. Functions were adapted from:
