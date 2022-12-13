@@ -1,0 +1,23 @@
+Package: prsperf
+Title: Estimate Theoretical Performance Of PRS
+Version: 0.0.0.9000
+Authors@R: 
+    person("Michael", "Levin", , "michael.levin@pennmedicine.upenn.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-9937-9932"))
+Description: A set of functions designed to estimate the optimal
+    performance of Polygenic Risk Scores based on heritablity and
+    population prevalence. The functions are obtained from:
+    https://doi.org/10.1186/1471-2164-13-340.
+License: MIT + file LICENSE
+Imports: 
+    checkmate,
+    quadprog
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

@@ -1,0 +1,126 @@
+---
+title: "prsperf"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- 
+Run this 'development' chunk
+
+Store every call to library() that you need to run chunks line by line, as in a classical Rmd for analysis
+-->
+
+```{r development, include=FALSE}
+library(testthat)
+library(devtools)
+```
+
+<!--
+# Description of your package
+
+This will fill the description of your package.
+Fill and run the content of this chunk, before anything else. 
+
+Note: when you will use other flat templates, this part will be in a separate file. Do not be surprised!
+--> 
+
+```{r description, eval=FALSE}
+# Describe your package
+fusen::fill_description(
+  pkg = here::here(),
+  fields = list(
+    Title = "Estimate Theoretical Performance of PRS",
+    Description = "A set of functions designed to estimate the optimal performance of Polygenic Risk Scores based on heritablity and population prevalence. The functions are obtained from: https://doi.org/10.1186/1471-2164-13-340",
+    `Authors@R` = c(
+      person("Michael", "Levin", email = "michael.levin@pennmedicine.upenn.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9937-9932"))
+    )
+  )
+)
+# Define License with use_*_license()
+usethis::use_mit_license("Michael Levin")
+```
+
+# Estimate Maximal AUC
+
+This function allows the user to estimate the maximal AUC based on population prevalence (`K`) and proportion of variance explained (`pve`).
+
+```{r function-max_auc}
+#' Estimate the Maximum AUC
+#' 
+#' Estimate the maximum AUC of a polygenic risk score based on the population prevalence of a disease `k` and the proportion of variability explained by the PRS `pve`.
+#' 
+#' @param k (numeric; range 0-1) Population prevalence of the disease of interest
+#' @param pve (numeric; range 0-1) Proportion of variability explained by the PRS
+#' @param n.bins (integer) Number of bins for estimating the AUC (default = 100)
+#'
+#' @return A numeric value for the maximum AUC
+#' @export
+max_auc <- function(k, pve, n.bins=100){
+    checkmate::assert_numeric(k, lower = 0, upper = 1)
+    checkmate::assert_numeric(pve, lower = 0, upper = 1)
+    checkmate::assert_numeric(n.bins)
+  
+    Q <- makeQ(n.bins=n.bins)
+    #check concavity to ensure that Q is negative semidefinite
+    eigen.vals <- eigen(x=Q, symmetric=TRUE, only.values=TRUE)$values
+    if (!all(eigen.vals<=0)){ warning('The matrix Q is not concave') }
+    #constraints: prevalence, pve, 0<=p, p<=1, sum(p)<=1
+    Amat <- rbind((1:n.bins)/n.bins, (1:n.bins)^2/(n.bins^2), diag(n.bins), -diag(n.bins), rep(-1, n.bins))
+    rhs <- c(k, k*(1-k)*pve+k^2, numeric(n.bins), rep(-1, n.bins), -1)
+    #run quadratic program over p
+    qp.res <- quadprog::solve.QP(Dmat=-Q, dvec=numeric(n.bins), Amat=t(Amat), bvec=rhs, meq=2)
+    auc <- (-2*qp.res$value+n.bins^2*k)/(n.bins^2*k*(1-k))
+    return(auc)
+}
+
+#' makeQ
+#'
+#' @param n.bins (integer) Number of bins
+#'
+#' @return a matrix
+
+makeQ <- function(n.bins){
+    mat <- matrix(0,nrow=n.bins,ncol=n.bins)
+    for (i in 1:nrow(mat)){
+        for (j in 1:ncol(mat)){
+            if (i>j){ mat[i,j] <- -(n.bins+i)*j/2 } else { mat[i,j] <- -(n.bins+j)*i/2 }
+        }
+    }
+    return(mat)
+}
+```
+
+Here, we can use the example of type II diabetes provided in the original manuscript:
+```{r example-max_auc}
+max_auc(k = 0.13, pve = 0.26)
+```
+  
+```{r tests-max_auc}
+test_that("max_auc works", {
+  res <- max_auc(k = 0.13, pve = 0.26)
+  expect_true(inherits(max_auc, "function"))
+  expect_type(res, "double")
+})
+```
+  
+
+<!-- 
+# Inflate your package
+
+You're one inflate from paper to box.
+Build your package from this very Rmd using `fusen::inflate()` 
+-->
+
+
+```{r development-inflate, eval=FALSE}
+# Execute in the console directly
+fusen::inflate(flat_file = "dev/auc.Rmd")
+```
+
+<!-- 
+- Verify your `"DESCRIPTION"` file has been updated
+- Verify your function is in `"R/"` directory
+- Verify your test is in `"tests/testthat/"` directory
+- Verify this Rmd appears in `"vignettes/"` directory 
+-->
