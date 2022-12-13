@@ -73,7 +73,23 @@ max_auc <- function(k, pve, n.bins=100){
     auc <- (-2*qp.res$value+n.bins^2*k)/(n.bins^2*k*(1-k))
     return(auc)
 }
+```
 
+Here, we can use the example of type II diabetes provided in the original manuscript:
+```{r example-max_auc}
+max_auc(k = 0.13, pve = 0.26)
+```
+  
+```{r tests-max_auc}
+test_that("max_auc works", {
+  res <- max_auc(k = 0.13, pve = 0.26)
+  expect_true(inherits(max_auc, "function"))
+  expect_type(res, "double")
+})
+```
+  
+  
+```{r function-makeQ}
 #' makeQ
 #'
 #' @param n.bins (integer) Number of bins
@@ -91,19 +107,6 @@ makeQ <- function(n.bins){
 }
 ```
 
-Here, we can use the example of type II diabetes provided in the original manuscript:
-```{r example-max_auc}
-max_auc(k = 0.13, pve = 0.26)
-```
-  
-```{r tests-max_auc}
-test_that("max_auc works", {
-  res <- max_auc(k = 0.13, pve = 0.26)
-  expect_true(inherits(max_auc, "function"))
-  expect_type(res, "double")
-})
-```
-  
 
 <!-- 
 # Inflate your package
