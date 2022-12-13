@@ -105,6 +105,22 @@ original manuscript:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/max_auc.html">max_auc</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">0.13</span>, pve <span class="op">=</span> <span class="fl">0.26</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.8882527</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="estimate-optimal-sensitivity">Estimate optimal sensitivity<a class="anchor" aria-label="anchor" href="#estimate-optimal-sensitivity"></a>
+</h2>
+<p>This function estimates the optimal (maximal or minimal) sensitivity
+of a PRS</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/opt_se.html">opt_se</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">0.13</span>, pve <span class="op">=</span> <span class="fl">0.26</span>, sp <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.3553533</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="estimate-optimal-specificity">Estimate optimal specificity<a class="anchor" aria-label="anchor" href="#estimate-optimal-specificity"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/opt_sp.html">opt_sp</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">0.13</span>, pve <span class="op">=</span> <span class="fl">0.26</span>, se <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.7367567</span></span></code></pre></div>
 <!-- 
 
 # Inflate your package
@@ -119,7 +135,8 @@ Build your package from this very Rmd using `fusen::inflate()`
 - Verify this Rmd appears in `"vignettes/"` directory 
 -->
 </div>
-  </main>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
